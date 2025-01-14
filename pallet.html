@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.1/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.1/addons/p5.sound.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="style.css" />
+
+    <script src="./common.js"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <!-- WEB COMPONENTS -->
+    <script src="./components/header.js"></script>
+    <script src="./components/footer.js"></script>
+    <script src="./components/button.js"></script>
+  </head>
+  <body>
+    <app-header></app-header>
+    <main>
+      <section>
+        <h1>#<span id="count"></span></h1>
+        <div
+          style="
+            display: flex;
+            position: sticky;
+            top: 0;
+            backdrop-filter: blur(10px);
+            width: 100%;
+            justify-content: center;
+            margin: 0 0 2rem 0;
+          "
+        >
+          <canvas
+            id="colours-set"
+            style="
+              margin: 2.5rem;
+              border-radius: 15px;
+              border: 1px solid #dfdfdf;
+            "
+          ></canvas>
+        </div>
+        <div class="sliderContainerList">
+          <div class="slidecontainer">
+            <p>Passive</p>
+            <input
+              type="range"
+              min="1"
+              max="100"
+              value="50"
+              class="slider"
+              id="climateO"
+            />
+            <p>Active</p>
+          </div>
+
+          <div class="slidecontainer">
+            <p>Dull</p>
+            <input
+              type="range"
+              min="1"
+              max="100"
+              value="50"
+              class="slider"
+              id="climateT"
+            />
+            <p>Bright</p>
+          </div>
+
+          <div class="slidecontainer">
+            <p>Cold</p>
+            <input
+              type="range"
+              min="1"
+              max="100"
+              value="50"
+              class="slider"
+              id="temperatureO"
+            />
+            <p>Warm</p>
+          </div>
+          <div class="slidecontainer">
+            <p>Wet</p>
+            <input
+              type="range"
+              min="1"
+              max="100"
+              value="50"
+              class="slider"
+              id="temperatureT"
+            />
+            <p>Dry</p>
+          </div>
+          <div class="slidecontainer">
+            <p>Sugary</p>
+            <input
+              type="range"
+              min="1"
+              max="100"
+              value="50"
+              class="slider"
+              id="aromaO"
+            />
+            <p>Bitter</p>
+          </div>
+          <div class="slidecontainer">
+            <p>Mild</p>
+            <input
+              type="range"
+              min="1"
+              max="100"
+              value="50"
+              class="slider"
+              id="aromaT"
+            />
+            <p>Acid</p>
+          </div>
+          <div class="slidecontainer">
+            <p>Silent</p>
+            <input
+              type="range"
+              min="1"
+              max="100"
+              value="50"
+              class="slider"
+              id="soundO"
+            />
+            <p>Noisy</p>
+          </div>
+          <div class="slidecontainer">
+            <p>Harsh</p>
+            <input
+              type="range"
+              min="1"
+              max="100"
+              value="50"
+              class="slider"
+              id="soundT"
+            />
+            <p>Harmonious</p>
+          </div>
+
+        </div>
+        <div class="horizontal-flex">
+          <app-button type="secondary" onmouseup="result()">Result</app-button>
+          <app-button type="primary" onmouseup="next()">Next</app-button>
+        </div>
+      </section>
+    </main>
+    <app-footer></app-footer>
+
+    <script src="sketch.js"></script>
+  </body>
+</html>

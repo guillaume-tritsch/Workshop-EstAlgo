@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+body {
+    margin: 0;
+
+    font-family:  "Poppins", serif;
+
+    min-height: 100vh;
+}
+
+main {
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding: 20vh 10vw;
+    box-sizing: border-box;
+}
+
+main > section {
+    display: flex;
+    flex-direction: column;
+    max-width: 40rem;
+
+
+}
+
+.sliderContainerList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 2rem;
+}
+
+.slidecontainer {
+    display: grid;
+    /* flex-direction: row; */
+    /* gap: 2rem;
+    align-items: center;
+    justify-content: center; */
+    grid-template-columns: 1fr 2fr 1fr;
+    width: 100%;
+    gap: 1rem
+}
+
+.slidecontainer > input {
+    width: 100%;
+}
+
+.slidecontainer p:first-child  {
+    justify-self: right;
+} 
+
+.horizontal-flex {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 3rem;
+}
+
+app-button {
+    width: fit-content;
+}
+
+.secondary-button button {
+    background-color: white;
+    border: 5px #007BFF solid;
+}
+
+/* body {
+    margin: 0;
+    background-color: black;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    font-family:  "Poppins", serif;
+
+    cursor: none;
+
+    user-select: none;
+
+    overflow: hidden;
+}
+
+body > main {
+    height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+body {
+    color: #979797;
+}
+
+canvas {
+    min-width: 800px;
+    min-height: 800px;
+}
+
+section {
+    width: 800px;
+} */
