@@ -21,7 +21,7 @@ class AppHeader extends HTMLElement {
             }
         </style>
         <header>    
-            <h2>Color Set Reviewer</h2>
+            <h2 href="./index.html">Color Set Reviewer</h2>
             <p>Workshop S1 | Design Algorithmic</p>
         </header>
       `;
