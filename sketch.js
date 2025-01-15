@@ -1,73 +1,254 @@
-let img;
-let palette = [];
+let apiKey = "8af95cc9"; // Remplace par ta clé OMDb API
 
-let colorNumber = sessionStorage.getItem('numberOfColor');
-if (!colorNumber) {
-  colorNumber = 4;
-  console.log("ERROR")
+// Classe abstraite pour définir la structure de toute source de palette
+class ColorSource {
+  constructor() {
+    if (this.getColors === undefined) {
+      throw new Error(
+        "Classes dérivées doivent implémenter la méthode getColors()."
+      );
+    }
+  }
 }
 
-function preload() {
-  // Remplace l'URL par celle de l'image que tu veux analyser
-  let imgUrl = "https://picsum.photos/200/200";
-  img = loadImage(imgUrl);
+// Implémentation pour des couleurs aléatoires
+class RandomColorSource extends ColorSource {
+  getColors(numberOfColors) {
+    let palette = [];
+    for (let i = 0; i < numberOfColors; i++) {
+      palette.push(color(random(255), random(255), random(255)));
+    }
+    return palette;
+  }
 }
 
-function setup() {
-  var canvas = document.getElementById("colours-set");
+class PicsumSource extends ColorSource {
+  constructor() {
+    super();
+    this.img = null;
+  }
 
-  createCanvas(colorNumber * 100, 100, canvas);
-  img.resize(200, 200); // Redimensionne pour faciliter l'analyse
-  // image(img, 0, 0);
+  async preload() {
+    return new Promise((resolve, reject) => {
+      let imgUrl = "https://picsum.photos/200/200";
 
-  extractPalette();
-  displayPalette();
-}
+      this.img = loadImage(
+        imgUrl,
+        () => {
+          console.log("Image chargée avec succès !");
+          resolve();
+        },
+        () => {
+          console.error("Erreur lors du chargement de l'image.");
+          reject("Erreur de chargement de l'image.");
+        }
+      );
+    });
+  }
 
-function extractPalette() {
-  img.loadPixels();
-  let colorCounts = {};
+  getColors(numberOfColors) {
+    let palette = [];
+    let colorCounts = {};
 
-  // Parcourt tous les pixels de l'image
-  for (let y = 0; y < img.height; y++) {
-    for (let x = 0; x < img.width; x++) {
-      let index = (x + y * img.width) * 4;
-      let r = img.pixels[index];
-      let g = img.pixels[index + 1];
-      let b = img.pixels[index + 2];
-      
-      let colorKey = `${r},${g},${b}`;
-      if (colorCounts[colorKey]) {
-        colorCounts[colorKey]++;
-      } else {
-        colorCounts[colorKey] = 1;
+    this.img.loadPixels();
+
+    for (let y = 0; y < this.img.height; y++) {
+      for (let x = 0; x < this.img.width; x++) {
+        let index = (x + y * this.img.width) * 4;
+        let r = this.img.pixels[index];
+        let g = this.img.pixels[index + 1];
+        let b = this.img.pixels[index + 2];
+
+        let colorKey = `${r},${g},${b}`;
+        colorCounts[colorKey] = (colorCounts[colorKey] || 0) + 1;
       }
     }
+
+    let sortedColors = Object.entries(colorCounts).sort((a, b) => b[1] - a[1]);
+
+    let threshold = 50;
+    for (
+      let i = 0;
+      i < sortedColors.length && palette.length < numberOfColors;
+      i++
+    ) {
+      let currentColor = sortedColors[i][0].split(",").map(Number);
+      if (this.isDistinct(currentColor, palette, threshold)) {
+        palette.push(color(currentColor[0], currentColor[1], currentColor[2]));
+      }
+    }
+
+    // Complète la palette si elle est incomplète
+    while (palette.length < numberOfColors) {
+      let baseColor = random(palette); // Choisit une couleur existante comme base
+      let variation = this.generateColorVariation(baseColor); // Crée une variation harmonieuse
+      palette.push(variation);
+    }
+
+    return palette;
   }
 
-  // Trie les couleurs par fréquence
-  let sortedColors = Object.entries(colorCounts).sort((a, b) => b[1] - a[1]);
-  
-  // Regroupe et filtre les couleurs similaires
-  let threshold = 50; // Distance minimale pour considérer deux couleurs comme différentes
-  palette = [];
-  for (let i = 0; i < sortedColors.length && palette.length < colorNumber; i++) {
-    let currentColor = sortedColors[i][0].split(',').map(Number);
-    if (isDistinct(currentColor)) {
-      palette.push(currentColor);
+  // Génère une couleur harmonieuse basée sur une couleur existante
+  generateColorVariation(baseColor) {
+    let r = baseColor.levels[0];
+    let g = baseColor.levels[1];
+    let b = baseColor.levels[2];
+
+    // Applique une variation légère sur chaque canal
+    let newR = constrain(r + random(-30, 30), 0, 255);
+    let newG = constrain(g + random(-30, 30), 0, 255);
+    let newB = constrain(b + random(-30, 30), 0, 255);
+
+    return color(newR, newG, newB);
+  }
+
+  isDistinct(color, palette, threshold) {
+    for (let existingColor of palette) {
+      let existingRGB = existingColor.levels;
+      let distance = dist(
+        color[0],
+        color[1],
+        color[2],
+        existingRGB[0],
+        existingRGB[1],
+        existingRGB[2]
+      );
+      if (distance < threshold) {
+        return false;
+      }
     }
+    return true;
+  }
+}
+class OMDbSource extends ColorSource {
+  constructor(apiKey) {
+    super();
+    this.apiKey = apiKey;
+    this.img = null;
+  }
+
+  preload() {
+    return new Promise(async (resolve, reject) => {
+      const movies = [
+        "Inception",
+        "Matrix",
+        "Avatar",
+        "Titanic",
+        "Interstellar",
+        "Jaws",
+        "Gladiator",
+        "Up",
+      ];
+      const randomMovie = movies[Math.floor(Math.random() * movies.length)];
+      const url = `https://www.omdbapi.com/?apikey=${this.apiKey}&t=${randomMovie}`;
+
+      try {
+        // Récupère les données du film
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (data && data.Poster) {
+          // Charge l'image de l'affiche
+          this.img = await loadImage(data.Poster, resolve, reject);
+          this.img.resize(200, 200);
+        } else {
+          reject("Aucune affiche trouvée pour ce film.");
+        }
+      } catch (error) {
+        reject("Erreur lors de la récupération de l'image.");
+      }
+    });
+  }
+
+  getColors(numberOfColors) {
+    if (!this.img) {
+      throw new Error("L'image n'a pas été chargée correctement.");
+    }
+
+    let palette = [];
+    let colorCounts = {};
+
+    this.img.loadPixels();
+
+    for (let y = 0; y < this.img.height; y++) {
+      for (let x = 0; x < this.img.width; x++) {
+        let index = (x + y * this.img.width) * 4;
+        let r = this.img.pixels[index];
+        let g = this.img.pixels[index + 1];
+        let b = this.img.pixels[index + 2];
+
+        let colorKey = `${r},${g},${b}`;
+        colorCounts[colorKey] = (colorCounts[colorKey] || 0) + 1;
+      }
+    }
+
+    let sortedColors = Object.entries(colorCounts).sort((a, b) => b[1] - a[1]);
+
+    let threshold = 50;
+    for (
+      let i = 0;
+      i < sortedColors.length && palette.length < numberOfColors;
+      i++
+    ) {
+      let currentColor = sortedColors[i][0].split(",").map(Number);
+      if (this.isDistinct(currentColor, palette, threshold)) {
+        palette.push(color(currentColor[0], currentColor[1], currentColor[2]));
+      }
+    }
+
+    return palette;
+  }
+
+  isDistinct(color, palette, threshold) {
+    for (let existingColor of palette) {
+      let existingRGB = existingColor.levels;
+      let distance = dist(
+        color[0],
+        color[1],
+        color[2],
+        existingRGB[0],
+        existingRGB[1],
+        existingRGB[2]
+      );
+      if (distance < threshold) {
+        return false;
+      }
+    }
+    return true;
   }
 }
 
-// Vérifie si une couleur est suffisamment différente des couleurs déjà sélectionnées
-function isDistinct(color) {
-  for (let existingColor of palette) {
-    let distance = dist(color[0], color[1], color[2], existingColor[0], existingColor[1], existingColor[2]);
-    if (distance < 50) {
-      return false;
+let colorSources = {
+  picsum: new PicsumSource(),
+  random: new RandomColorSource(),
+  omdb: new OMDbSource(apiKey), // Nouvelle source basée sur OMDb API
+};
+
+// Configuration globale
+let palette = [];
+let colorNumber = sessionStorage.getItem("numberOfColor") || 4;
+let selectedSource = sessionStorage.getItem("generationType") || "picsum";
+let colorSource = colorSources[selectedSource];
+console.log(selectedSource, colorSource);
+
+async function setup() {
+  createCanvas(colorNumber * 100, 100, document.getElementById("colours-set"));
+
+  try {
+    // Vérifie si la méthode preload existe avant de l'appeler
+    if (typeof colorSource.preload === "function") {
+      await colorSource.preload();
     }
+
+    palette = colorSource.getColors(colorNumber);
+    console.log("Palette avant tri :", palette);
+    sortPaletteByHex(palette);
+    console.log("Palette après tri :", palette);
+
+    displayPalette();
+  } catch (error) {
+    console.error("Erreur dans la configuration :", error);
   }
-  return true;
 }
 
 function displayPalette() {
@@ -76,4 +257,20 @@ function displayPalette() {
     noStroke();
     rect(i * 100, 0, 100, 100);
   }
+}
+
+function sortPaletteByHex(palette) {
+  return palette.sort((a, b) => {
+    let hexA = rgbToHex(a.levels[0], a.levels[1], a.levels[2]);
+    let hexB = rgbToHex(b.levels[0], b.levels[1], b.levels[2]);
+    return hexA.localeCompare(hexB);
+  });
+}
+
+// Convertir RGB en Hex
+function rgbToHex(r, g, b) {
+  return (
+    "#" +
+    ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase()
+  );
 }

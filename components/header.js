@@ -19,9 +19,14 @@ class AppHeader extends HTMLElement {
                 align-items: center;
                 padding: 0 1.5rem;
             }
+
+            a {
+    text-decoration: none;
+    color: black;
+}
         </style>
         <header>    
-            <h2 href="./index.html">Color Set Reviewer</h2>
+            <a href="./index.html"><h2>Color Set Reviewer</h2></a>
             <p>Workshop S1 | Design Algorithmic</p>
         </header>
       `;

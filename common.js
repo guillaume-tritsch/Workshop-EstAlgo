@@ -104,6 +104,7 @@ function start() {
     clearList()
 
     sessionStorage.setItem('numberOfColor', document.getElementById('numberOfColor').value);
+    sessionStorage.setItem('generationType', document.getElementById('generation-system').value);
 
     window.location.href = "./pallet.html";
 }

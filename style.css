@@ -49,6 +49,11 @@ main > section {
     width: 100%;
 }
 
+#background-canvas {
+    width: 100vw !important;
+    height: 100% !important;
+}
+
 .slidecontainer p:first-child  {
     justify-self: right;
 } 
@@ -64,6 +69,8 @@ main > section {
 app-button {
     width: fit-content;
 }
+
+
 
 .secondary-button button {
     background-color: white;

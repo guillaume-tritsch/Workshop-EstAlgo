@@ -17,12 +17,12 @@ class AppButton extends HTMLElement {
               border: none;
               padding: 10px 20px;
               font-size: 16px;
-              border-radius: 5px;
+              border-radius: 4px;
               cursor: pointer;
               min-height: 44px;
               transition: background-color 0.3s, color 0.3s;
             }
-                        button.primary {
+            button.primary {
               background-color: #007BFF;
               color: white;
             }
@@ -40,17 +40,17 @@ class AppButton extends HTMLElement {
               color: #0056b3;
             }
               
-              ::slotted(.icon) {
+            ::slotted(.icon) {
                 margin-left: 8px;
                 width: 24px;
                 height: 24px;
-    }
-                button.secondary ::slotted(.icon) {
-                   filter: invert(28%) sepia(96%) saturate(2828%) hue-rotate(201deg) brightness(106%) contrast(102%);
-                }
-                button.primary ::slotted(.icon) {
-                    filter: invert(100%) sepia(0%) saturate(7500%) hue-rotate(17deg) brightness(123%) contrast(114%);
-                }
+            }
+            button.secondary ::slotted(.icon) {
+                filter: invert(28%) sepia(96%) saturate(2828%) hue-rotate(201deg) brightness(106%) contrast(102%);
+            }
+            button.primary ::slotted(.icon) {
+                filter: invert(100%) sepia(0%) saturate(7500%) hue-rotate(17deg) brightness(123%) contrast(114%);
+            }
           </style>
           <button><slot style="display:flex; align-items: center"></slot></button>
         `;
