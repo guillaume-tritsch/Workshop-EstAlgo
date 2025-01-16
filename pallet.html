@@ -25,7 +25,7 @@
     <app-header></app-header>
     <main>
       <section>
-        <h1>#<span id="count"></span></h1>
+        <h1>Palette number #<span id="count"></span> - <span id="genType"></span></h1>
         <div
           style="
             display: grid;
@@ -39,6 +39,7 @@
             align-items: center;
           "
         >
+        <p style="position: absolute; bottom: 0px; left: 25%; color: #dfdfdf;"><span id="palette-number">1</span>/4</p>
         <img src="./ressources/icons/chevron_left_24dp.svg" onclick="displayPrevious()" class="button-icon" style="justify-self: right;">
           <div class="gallery-item" style="display: flex; justify-content: center; align-items: center;">
             <canvas

@@ -230,6 +230,8 @@ let colorNumber = sessionStorage.getItem("numberOfColor") || 4;
 let selectedSource = sessionStorage.getItem("generationType") || "picsum";
 let colorSource = colorSources[selectedSource];
 
+
+
 let paletteUpdateResolve; // Déclare la variable
 let paletteUpdatePromise = new Promise((resolve, reject) => {
   paletteUpdateResolve = resolve; // Initialise la méthode `resolve`
@@ -240,6 +242,18 @@ window.addEventListener("load", function () {
   console.log(selectedSource, colorSource);
 
   document.getElementById("colours-set").style.display = "none";
+  switch (selectedSource) {
+    case "picsum":
+      this.document.getElementById("genType").innerText = "Online Pictures"
+      break;
+      case "random":
+        this.document.getElementById("genType").innerText = "Random"
+        break;
+        case "omdb":
+          this.document.getElementById("genType").innerText = "Movie Posters"
+    
+          break;
+  }
 });
 
 async function setup() {

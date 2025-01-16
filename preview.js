@@ -1,7 +1,7 @@
 palettesGradient = [];
 
 function gradientSketch(p) {
-  let blurStrength = 20; // Force du flou (1 = aucun flou, 2 = faible, 3+ = plus fort)
+  let blurStrength = 15; // Force du flou (1 = aucun flou, 2 = faible, 3+ = plus fort)
   let smallCanvasSize = 75; // Taille réduite pour les calculs initiaux
   let smallCanvas;
 
@@ -12,8 +12,7 @@ function gradientSketch(p) {
   };
 
   p.draw = function draw() {
-    p.background(0);
-
+    displayPalette();
     // Dessiner et flouter sur le canvas secondaire réduit
     drawAndBlurSmallCanvas();
 
@@ -24,14 +23,23 @@ function gradientSketch(p) {
     //   addNoiseToCanvas();
   };
 
+
+function displayPalette() {
+  for (let i = 0; i < palettesGradient.length; i++) {
+    p.fill(palettesGradient[i]);
+    p.noStroke();
+    p.rect(i * 100, 0, 100, 200);
+  }
+}
+
+
   function drawAndBlurSmallCanvas() {
     const palettes = palettesGradient;
 
-    smallCanvas.background(0);
     smallCanvas.noStroke();
     smallCanvas.drawingContext.filter = `blur(${blurStrength}px)`; // Flou sur le canvas réduit
 
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 200; i++) {
       smallCanvas.fill(palettes[Math.floor(Math.random() * 4)]);
       let size = p.random(10, 20); // Ajuster les tailles pour correspondre à la réduction
       smallCanvas.ellipse(
@@ -55,7 +63,7 @@ function mondrianSketch(p) {
     p.createCanvas(palettesGradient.length * 100, 200, document.getElementById("preview-shape"));
     p.noLoop();
     p.noFill();
-    p.strokeWeight(5); // Largeur des lignes
+    p.strokeWeight(1); // Largeur des lignes
     p.stroke(0); // Couleur des lignes (noir)
   }
   
