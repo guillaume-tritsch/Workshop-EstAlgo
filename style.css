@@ -22,16 +22,21 @@ main {
 main > section {
     display: flex;
     flex-direction: column;
-    max-width: 40rem;
+    align-items: center;
+}
 
-
+main > section > h1 {
+    width: 100%;
 }
 
 .sliderContainerList {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    /* flex-direction: column; */
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
     gap: 0.5rem;
     margin: 2rem;
+    width: max-content;
 }
 
 .slidecontainer {
@@ -58,23 +63,72 @@ main > section {
     justify-self: right;
 } 
 
+.button-icon {
+    height: 6rem;
+    opacity: 0.5;
+    transition: 0.2s all;
+    cursor: pointer;
+}
+
+.button-icon:hover {
+    opacity: 0.9;
+}
+
 .horizontal-flex {
     width: 100%;
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    /* flex-direction: row; */
     justify-content: center;
+    grid-template-columns: 1fr 1fr;
+
     gap: 3rem;
+}
+
+.horizontal-flex *:first-child {
+    justify-self: right;
 }
 
 app-button {
     width: fit-content;
 }
 
+#color-code {
+    display: flex;
+    flex-direction: column;
+    margin: 2.5rem;
+    border-radius: 15px;
+    overflow: hidden;
+    border: 1px solid rgb(223, 223, 223);
+}
 
+#color-code div {
+    flex-grow: 1;
+}
+#color-code p {
+    margin: 0;
+    padding: 0;
+    background-color: rgba(255, 255, 255, 0.585);
+    width: fit-content;
+}
 
 .secondary-button button {
     background-color: white;
     border: 5px #007BFF solid;
+}
+
+.loader-spinner {
+    width: 100px;
+    margin: 2.5rem;
+}
+
+@media (max-width: 1250px) {
+    .sliderContainerList {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin: 2rem;
+        width: max-content;
+    }
 }
 
 /* body {

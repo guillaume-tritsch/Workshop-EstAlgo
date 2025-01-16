@@ -6,7 +6,11 @@
 
     <link rel="stylesheet" type="text/css" href="style.css" />
 
+    <script src="./sketch.js"></script>
+
     <script src="./common.js"></script>
+    <script src="./gallery.js"></script>
+    <script src="./preview.js"></script>
 
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -24,24 +28,61 @@
         <h1>#<span id="count"></span></h1>
         <div
           style="
-            display: flex;
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
             position: sticky;
             top: 0;
             backdrop-filter: blur(10px);
             width: 100%;
             justify-content: center;
             margin: 0 0 2rem 0;
+            align-items: center;
           "
         >
-          <canvas
-            id="colours-set"
-            style="
-              margin: 2.5rem;
-              border-radius: 15px;
-              border: 1px solid #dfdfdf;
-            "
-          ></canvas>
-          
+        <img src="./ressources/icons/chevron_left_24dp.svg" onclick="displayPrevious()" class="button-icon" style="justify-self: right;">
+          <div class="gallery-item" style="display: flex; justify-content: center; align-items: center;">
+            <canvas
+              id="colours-set"
+              style="
+                margin: 2.5rem;
+                border-radius: 15px;
+                border: 1px solid #dfdfdf;
+              "
+            ></canvas>
+            <img class="loader-spinner" id="palette-loader" src="./ressources/icons/tube-spinner.svg">
+          </div>
+
+
+
+          <div class="gallery-item" style="display: flex; justify-content: center; align-items: center;">
+            <canvas
+              id="preview-gradient"
+              style="
+                margin: 2.5rem;
+                border-radius: 15px;
+                border: 1px solid #dfdfdf;
+              "
+            ></canvas>
+            <img class="loader-spinner-gradient" id="gradient-loader" src="./ressources/icons/tube-spinner.svg">
+          </div>
+
+          <div class="gallery-item" style="display: flex; justify-content: center; align-items: center;">
+            <canvas
+              id="preview-shape"
+              style="
+                margin: 2.5rem;
+                border-radius: 15px;
+                border: 1px solid #dfdfdf;
+              "
+            ></canvas>
+            <img class="loader-spinner" id="shape-loader" src="./ressources/icons/tube-spinner.svg">
+          </div>
+          <div class="gallery-item" style="display: flex; justify-content: center; align-items: center;">
+            <div id="color-code">
+              
+            </div>
+          </div>
+          <img src="./ressources/icons/chevron_right_24dp.svg" onclick="displayNext()" class="button-icon">
         </div>
         <div class="sliderContainerList">
             
@@ -153,6 +194,5 @@
     </main>
     <app-footer></app-footer>
 
-    <script src="sketch.js"></script>
   </body>
 </html>

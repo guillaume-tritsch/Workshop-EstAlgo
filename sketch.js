@@ -225,14 +225,25 @@ let colorSources = {
 };
 
 // Configuration globale
-let palette = [];
+var palette = [];
 let colorNumber = sessionStorage.getItem("numberOfColor") || 4;
 let selectedSource = sessionStorage.getItem("generationType") || "picsum";
 let colorSource = colorSources[selectedSource];
-console.log(selectedSource, colorSource);
+
+let paletteUpdateResolve; // Déclare la variable
+let paletteUpdatePromise = new Promise((resolve, reject) => {
+  paletteUpdateResolve = resolve; // Initialise la méthode `resolve`
+  console.log("eeee");
+});
+
+window.addEventListener("load", function () {
+  console.log(selectedSource, colorSource);
+
+  document.getElementById("colours-set").style.display = "none";
+});
 
 async function setup() {
-  createCanvas(colorNumber * 100, 100, document.getElementById("colours-set"));
+  createCanvas(colorNumber * 100, 200, document.getElementById("colours-set"));
 
   try {
     // Vérifie si la méthode preload existe avant de l'appeler
@@ -241,6 +252,23 @@ async function setup() {
     }
 
     palette = colorSource.getColors(colorNumber);
+
+    let colorCodeElement = this.document.getElementById("color-code")
+    colorCodeElement.style.width = `${colorNumber * 100}px`
+    colorCodeElement.style.height = `${200}px`
+
+    for (let index = 0; index < palette.length; index++) {
+      const colorCodeC = palette[index];
+      let divA = document.createElement("div");
+      let pA = document.createElement("p");
+      divA.appendChild(pA);
+      divA.style.backgroundColor = `rgb(${colorCodeC.levels[0]},${colorCodeC.levels[1]},${colorCodeC.levels[2]})`
+      pA.innerText = `R${colorCodeC.levels[0]} G${colorCodeC.levels[1]} B${colorCodeC.levels[2]}`
+      colorCodeElement.appendChild(divA)
+    } 
+
+
+
     console.log("Palette avant tri :", palette);
     sortPaletteByHex(palette);
     console.log("Palette après tri :", palette);
@@ -249,14 +277,18 @@ async function setup() {
   } catch (error) {
     console.error("Erreur dans la configuration :", error);
   }
+
+  paletteUpdateResolve(palette); // Résolution de la promesse
 }
 
 function displayPalette() {
   for (let i = 0; i < palette.length; i++) {
     fill(palette[i]);
     noStroke();
-    rect(i * 100, 0, 100, 100);
+    rect(i * 100, 0, 100, 200);
   }
+  document.getElementById("colours-set").style.display = "block";
+  document.getElementById("palette-loader").style.display = "none";
 }
 
 function sortPaletteByHex(palette) {

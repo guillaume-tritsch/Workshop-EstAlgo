@@ -4,7 +4,16 @@ window.addEventListener("load", function () {
 });
 
 function result() {
+  let stringPalette = ""
+
+  for (let index = 0; index < palette.length; index++) {
+    const elementColor = palette[index];
+
+    stringPalette += `${rgbToHex(elementColor.levels[0], elementColor.levels[1], elementColor.levels[2])}`
+  }
+
   addToList([
+    stringPalette,
     document.getElementById("climateO").value / 100,
     document.getElementById("climateT").value / 100,
     document.getElementById("temperatureO").value / 100,
@@ -19,7 +28,15 @@ function result() {
 }
 
 function next() {
+  let stringPalette = "" 
+  for (let index = 0; index < palette.length; index++) {
+    const elementColor = palette[index];
+
+    stringPalette += `${rgbToHex(elementColor.levels[0], elementColor.levels[1], elementColor.levels[2])}`
+  }
+
   addToList([
+    stringPalette,
     document.getElementById("climateO").value / 100,
     document.getElementById("climateT").value / 100,
     document.getElementById("temperatureO").value / 100,
@@ -92,7 +109,7 @@ function downloadCSV(data, headers, filename = "data.csv") {
     document.body.removeChild(link);
 }
 
-const headers = ["active", "bright", "warm", "dry", "bitter", "acid", "noisy", "harmonious"];
+const headers = ["hexa", "active", "bright", "warm", "dry", "bitter", "acid", "noisy", "harmonious"];
 
 
 function download() {
