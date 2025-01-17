@@ -28,7 +28,7 @@
           since the 1500s, when an unknown printer took a galley of type and
           scrambled it to make a type specimen book.
         </p>
-        <div style="display: flex; flex-direction: column; gap: 1rem">
+        <div style="display: flex; flex-direction: column; gap: 1rem; width: 100%">
           <div>
             <label for="generation-system">Colors sets generation will use </label>
             <select name="generation-system" id="generation-system">
@@ -45,7 +45,10 @@
             <input type="number" value="4" length="1" min="4" max="8" name="numberOfColor" id="numberOfColor">
 
           </div>
-          <app-button type="primary" onmouseup="start()">Start review</app-button>
+          <div style="width: 100%; display: flex; align-items: center; justify-content: center;">
+            <app-button type="primary" onmouseup="start()">Start review</app-button>
+
+          </div>
 
         </div>
       </section>
