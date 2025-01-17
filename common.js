@@ -78,28 +78,28 @@ function clearList() {
 
 
 function downloadCSV(data, headers, filename = "data.csv") {
-    // Vérifier que les données et les en-têtes correspondent en taille
+    
     if (headers.length !== data[0].length) {
         console.error("Le nombre d'en-têtes ne correspond pas au nombre de colonnes dans les données.");
         return;
     }
 
-    // Créer une chaîne pour le fichier CSV
+    
     const csvRows = [];
 
-    // Ajouter les en-têtes
+    
     csvRows.push(headers.join(","));
 
-    // Ajouter les lignes de données
+    
     data.forEach(row => {
         csvRows.push(row.join(","));
     });
 
-    // Créer un objet Blob avec le contenu CSV
+    
     const csvContent = csvRows.join("\n");
     const blob = new Blob([csvContent], { type: "text/csv" });
 
-    // Créer un lien de téléchargement et déclencher le téléchargement
+    
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
     link.download = filename;

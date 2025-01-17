@@ -1,6 +1,6 @@
-let apiKey = "8af95cc9"; // Remplace par ta clé OMDb API
+let apiKey = "8af95cc9"; 
 
-// Classe abstraite pour définir la structure de toute source de palette
+
 class ColorSource {
   constructor() {
     if (this.getColors === undefined) {
@@ -11,7 +11,7 @@ class ColorSource {
   }
 }
 
-// Implémentation pour des couleurs aléatoires
+
 class RandomColorSource extends ColorSource {
   getColors(numberOfColors) {
     let palette = [];
@@ -78,23 +78,23 @@ class PicsumSource extends ColorSource {
       }
     }
 
-    // Complète la palette si elle est incomplète
+    
     while (palette.length < numberOfColors) {
-      let baseColor = random(palette); // Choisit une couleur existante comme base
-      let variation = this.generateColorVariation(baseColor); // Crée une variation harmonieuse
+      let baseColor = random(palette); 
+      let variation = this.generateColorVariation(baseColor); 
       palette.push(variation);
     }
 
     return palette;
   }
 
-  // Génère une couleur harmonieuse basée sur une couleur existante
+  
   generateColorVariation(baseColor) {
     let r = baseColor.levels[0];
     let g = baseColor.levels[1];
     let b = baseColor.levels[2];
 
-    // Applique une variation légère sur chaque canal
+    
     let newR = constrain(r + random(-30, 30), 0, 255);
     let newG = constrain(g + random(-30, 30), 0, 255);
     let newB = constrain(b + random(-30, 30), 0, 255);
@@ -131,24 +131,53 @@ class OMDbSource extends ColorSource {
     return new Promise(async (resolve, reject) => {
       const movies = [
         "Inception",
-        "Matrix",
+        "The Matrix",
         "Avatar",
         "Titanic",
         "Interstellar",
         "Jaws",
         "Gladiator",
         "Up",
+        "Frozen",
+        "Toy Story",
+        "The Lion King",
+        "Finding Nemo",
+        "Spirited Away",
+        "Shrek",
+        "Coco",
+        "Wall-E",
+        "Moana",
+        "How to Train Your Dragon",
+        "Ratatouille",
+        "The Incredibles",
+        "Kung Fu Panda",
+        "Zootopia",
+        "The Lego Movie",
+        "Beauty and the Beast",
+        "Aladdin",
+        "Mulan",
+        "The Little Mermaid",
+        "Big Hero 6",
+        "Inside Out",
+        "Brave",
+        "The Nightmare Before Christmas",
+        "Despicable Me",
+        "Madagascar",
+        "The Secret Life of Pets",
+        "Sing",
+        "Tangled",
+        "Monsters, Inc.",
       ];
       const randomMovie = movies[Math.floor(Math.random() * movies.length)];
       const url = `https://www.omdbapi.com/?apikey=${this.apiKey}&t=${randomMovie}`;
 
       try {
-        // Récupère les données du film
+        
         const response = await fetch(url);
         const data = await response.json();
 
         if (data && data.Poster) {
-          // Charge l'image de l'affiche
+          
           this.img = await loadImage(data.Poster, resolve, reject);
           this.img.resize(200, 200);
         } else {
@@ -221,20 +250,18 @@ class OMDbSource extends ColorSource {
 let colorSources = {
   picsum: new PicsumSource(),
   random: new RandomColorSource(),
-  omdb: new OMDbSource(apiKey), // Nouvelle source basée sur OMDb API
+  omdb: new OMDbSource(apiKey), 
 };
 
-// Configuration globale
+
 var palette = [];
 let colorNumber = sessionStorage.getItem("numberOfColor") || 4;
 let selectedSource = sessionStorage.getItem("generationType") || "picsum";
 let colorSource = colorSources[selectedSource];
 
-
-
-let paletteUpdateResolve; // Déclare la variable
+let paletteUpdateResolve; 
 let paletteUpdatePromise = new Promise((resolve, reject) => {
-  paletteUpdateResolve = resolve; // Initialise la méthode `resolve`
+  paletteUpdateResolve = resolve; 
   console.log("eeee");
 });
 
@@ -244,15 +271,15 @@ window.addEventListener("load", function () {
   document.getElementById("colours-set").style.display = "none";
   switch (selectedSource) {
     case "picsum":
-      this.document.getElementById("genType").innerText = "Online Pictures"
+      this.document.getElementById("genType").innerText = "Online Pictures";
       break;
-      case "random":
-        this.document.getElementById("genType").innerText = "Random"
-        break;
-        case "omdb":
-          this.document.getElementById("genType").innerText = "Movie Posters"
-    
-          break;
+    case "random":
+      this.document.getElementById("genType").innerText = "Random";
+      break;
+    case "omdb":
+      this.document.getElementById("genType").innerText = "Movie Posters";
+
+      break;
   }
 });
 
@@ -260,28 +287,26 @@ async function setup() {
   createCanvas(colorNumber * 100, 200, document.getElementById("colours-set"));
 
   try {
-    // Vérifie si la méthode preload existe avant de l'appeler
+    
     if (typeof colorSource.preload === "function") {
       await colorSource.preload();
     }
 
     palette = colorSource.getColors(colorNumber);
 
-    let colorCodeElement = this.document.getElementById("color-code")
-    colorCodeElement.style.width = `${colorNumber * 100}px`
-    colorCodeElement.style.height = `${200}px`
+    let colorCodeElement = this.document.getElementById("color-code");
+    colorCodeElement.style.width = `${colorNumber * 100}px`;
+    colorCodeElement.style.height = `${200}px`;
 
     for (let index = 0; index < palette.length; index++) {
       const colorCodeC = palette[index];
       let divA = document.createElement("div");
       let pA = document.createElement("p");
       divA.appendChild(pA);
-      divA.style.backgroundColor = `rgb(${colorCodeC.levels[0]},${colorCodeC.levels[1]},${colorCodeC.levels[2]})`
-      pA.innerText = `R${colorCodeC.levels[0]} G${colorCodeC.levels[1]} B${colorCodeC.levels[2]}`
-      colorCodeElement.appendChild(divA)
-    } 
-
-
+      divA.style.backgroundColor = `rgb(${colorCodeC.levels[0]},${colorCodeC.levels[1]},${colorCodeC.levels[2]})`;
+      pA.innerText = `R${colorCodeC.levels[0]} G${colorCodeC.levels[1]} B${colorCodeC.levels[2]}`;
+      colorCodeElement.appendChild(divA);
+    }
 
     console.log("Palette avant tri :", palette);
     sortPaletteByHex(palette);
@@ -292,7 +317,7 @@ async function setup() {
     console.error("Erreur dans la configuration :", error);
   }
 
-  paletteUpdateResolve(palette); // Résolution de la promesse
+  paletteUpdateResolve(palette); 
 }
 
 function displayPalette() {
@@ -313,7 +338,7 @@ function sortPaletteByHex(palette) {
   });
 }
 
-// Convertir RGB en Hex
+
 function rgbToHex(r, g, b) {
   return (
     "#" +

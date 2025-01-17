@@ -2,10 +2,10 @@ class AppButton extends HTMLElement {
   constructor() {
     super();
 
-    // Crée un Shadow DOM
+    
     const shadow = this.attachShadow({ mode: "open" });
 
-    // Structure HTML de base
+    
     const template = document.createElement("template");
     template.innerHTML = `
           <style>
@@ -55,10 +55,10 @@ class AppButton extends HTMLElement {
           <button><slot style="display:flex; align-items: center"></slot></button>
         `;
 
-    // Ajoute le contenu au Shadow DOM
+    
     shadow.appendChild(template.content.cloneNode(true));
 
-    // Référence au bouton
+    
     this.button = shadow.querySelector("button");
   }
 
@@ -81,10 +81,10 @@ class AppButton extends HTMLElement {
   }
 
   updateType() {
-    // Efface les classes existantes
+    
     this.button.className = "";
 
-    // Ajoute une classe basée sur l'attribut `type`
+    
     const type = this.getAttribute("type");
     if (type) {
       this.button.classList.add(type);
@@ -98,10 +98,10 @@ class AppButton extends HTMLElement {
         window.location.href = href;
       };
     } else {
-      this.button.onclick = null; // Supprime l'événement si href est retiré
+      this.button.onclick = null; 
     }
   }
 }
 
-// Définit le custom element
+
 customElements.define("app-button", AppButton);
