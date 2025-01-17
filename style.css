@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
+h1 {
+    font-size: 1.3em;
+}
+
 body {
     margin: 0;
 
@@ -9,20 +13,19 @@ body {
 }
 
 main {
-    min-height: 100vh;
+    min-height: 90vh;
 
     display: flex;
     flex-direction: column;
     align-items: center;
-
-    padding: 10vh 10vw;
+    justify-content: center;
+    padding: 5vh 10vw;
     box-sizing: border-box;
 }
 
 main > section {
     display: flex;
     flex-direction: column;
-    align-items: center;
 }
 
 main > section > h1 {
@@ -34,7 +37,7 @@ main > section > h1 {
     /* flex-direction: column; */
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr;
-    gap: 0.5rem;
+    gap: 1.3rem;
     margin: 2rem;
     width: max-content;
 }
@@ -50,6 +53,9 @@ main > section > h1 {
     gap: 1rem
 }
 
+.slidecontainer > p {
+    margin: 0;
+}
 .slidecontainer > input {
     width: 100%;
 }
@@ -125,7 +131,7 @@ app-button {
     .sliderContainerList {
         display: flex;
         flex-direction: column;
-        gap: 0.5rem;
+        gap: 1.5rem;
         margin: 2rem;
         width: max-content;
     }

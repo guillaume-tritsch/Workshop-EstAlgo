@@ -19,7 +19,9 @@ class AppHeader extends HTMLElement {
                 align-items: center;
                 padding: 0 1.5rem;
             }
-
+            h2 {
+                font-size: 1.3em;
+            }
             a {
     text-decoration: none;
     color: black;
