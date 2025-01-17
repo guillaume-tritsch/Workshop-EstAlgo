@@ -4,16 +4,7 @@ window.addEventListener("load", function () {
 });
 
 function result() {
-  let stringPalette = ""
-
-  for (let index = 0; index < palette.length; index++) {
-    const elementColor = palette[index];
-
-    stringPalette += `${rgbToHex(elementColor.levels[0], elementColor.levels[1], elementColor.levels[2])}`
-  }
-
-  addToList([
-    stringPalette,
+  var data = [
     document.getElementById("climateO").value / 100,
     document.getElementById("climateT").value / 100,
     document.getElementById("temperatureO").value / 100,
@@ -22,21 +13,21 @@ function result() {
     document.getElementById("aromaT").value / 100,
     document.getElementById("soundO").value / 100,
     document.getElementById("soundT").value / 100,
-  ]);
+  ];
+
+  for (let index = 0; index < palette.length; index++) {
+    const elementColor = palette[index];
+
+    data.push(`${rgbToHex(elementColor.levels[0], elementColor.levels[1], elementColor.levels[2])}`)
+  }
+
+  addToList(data);
 
   window.location.href = "./result.html";
 }
 
 function next() {
-  let stringPalette = "" 
-  for (let index = 0; index < palette.length; index++) {
-    const elementColor = palette[index];
-
-    stringPalette += `${rgbToHex(elementColor.levels[0], elementColor.levels[1], elementColor.levels[2])}`
-  }
-
-  addToList([
-    stringPalette,
+  var data = [
     document.getElementById("climateO").value / 100,
     document.getElementById("climateT").value / 100,
     document.getElementById("temperatureO").value / 100,
@@ -45,7 +36,15 @@ function next() {
     document.getElementById("aromaT").value / 100,
     document.getElementById("soundO").value / 100,
     document.getElementById("soundT").value / 100,
-  ]);
+  ];
+
+  for (let index = 0; index < palette.length; index++) {
+    const elementColor = palette[index];
+
+    data.push(`${rgbToHex(elementColor.levels[0], elementColor.levels[1], elementColor.levels[2])}`)
+  }
+
+  addToList(data);
 
   window.location.href = "./pallet.html";
 }
@@ -109,11 +108,16 @@ function downloadCSV(data, headers, filename = "data.csv") {
     document.body.removeChild(link);
 }
 
-const headers = ["hexa", "active", "bright", "warm", "dry", "bitter", "acid", "noisy", "harmonious"];
-
+var headers = ["active", "bright", "warm", "dry", "bitter", "acid", "noisy", "harmonious"];
 
 function download() {
-    downloadCSV(getList(), headers, Date.now() + ".csv");
+  let colorNumber = sessionStorage.getItem("numberOfColor") || 4;
+
+  for (let index = 0; index < colorNumber; index++) {
+    headers.push("color-"+(index + 1))
+  }
+
+  downloadCSV(getList(), headers, Date.now() + ".csv");
 }
 
 function start() {
