@@ -5,7 +5,7 @@ We chose to work on **Option B**, integrating three main ideas for generating co
 2. Extracting colors from pictures using the **Picsum API**.  
 3. Deriving colors from movie posters using the **OMDb API**.  
 
-> The second palette display (gradient) does not work properly on this browser.
+> The second palette display (gradient) does not work properly on Safari.
 
 ## Features
 
